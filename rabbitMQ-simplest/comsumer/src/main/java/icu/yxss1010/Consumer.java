@@ -10,7 +10,7 @@ public class Consumer {
         // 1.创建连接工厂
         ConnectionFactory factory = new ConnectionFactory();
         // 2.设置参数
-        factory.setHost("10.1.19.110"); // ip 默认值： localhost
+        factory.setHost("localhost"); // ip 默认值： localhost
         factory.setPort(5672);// 端口 默认值：5672
         factory.setVirtualHost("/");// 虚拟机 默认值：/
         factory.setUsername("guest");// 用户名 默认值：guest
@@ -21,6 +21,13 @@ public class Consumer {
         Channel channel = connection.createChannel();
         // 5. 接受信息
         com.rabbitmq.client.Consumer consumer = new DefaultConsumer(channel){
+            /*
+            * 回调方法，当收到消息后，会自动执行该方法
+            * 1、 consumerTag：标识
+            * 2、 envelope：获取一些信息，交换机，路由key
+            * 3、 properties：配置信息
+            * 4、 body：数据
+            * */
             @Override
             public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                 System.out.println("body=>" + new String(body));
